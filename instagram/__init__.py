@@ -291,3 +291,24 @@ def media_popular(req):
 def geo_media_recent(req):
     data = req.json().get('data')
     return _parse_medias(data)
+
+
+@endpoint('/v1/locations/%(location_id)s')
+def location(req):
+    data = req.json().get('data')
+    return Location.parse_from_dict(data)
+
+
+@endpoint('/v1/locations/%(location_id)s/media/recent')
+def location_media_recent(req):
+    data = req.json().get('data')
+    return _parse_medias(data)
+
+
+@endpoint('/v1/locations/search')
+def location_search(req):
+    data = req.json().get('data')
+    locations = []
+    for location in data:
+        locations.append(Location.parse_from_dict(location))
+    return locations
