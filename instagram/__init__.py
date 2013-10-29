@@ -333,3 +333,24 @@ def tags_search(req):
     for tag in data:
         tags.append(Tag.parse_from_dict(tag))
     return tags
+
+
+@endpoint('/v1/media/%(media_id)s/comments')
+def media_comments(req):
+    data = req.json().get('data')
+    comments = []
+    for comment in comments:
+        comments.append(Comment.parse_from_dict(data.get(comment)))
+    return comments
+
+
+@endpoint('/v1/media/%(media_id)s/comments', method='POST')
+def post_media_comment(req):
+    data = req.json()
+    return True if data.get('meta').get('code') == 200 else False
+
+
+@endpoint('/v1/media(%(media_id)s/comments/%(comment_id)s', method='DELETE')
+def delete_media_comment(req):
+    data = req.json()
+    return True if data.get('meta').get('code') == 200 else False
