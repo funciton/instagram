@@ -3,7 +3,7 @@ import functools
 import requests
 
 
-INSTAGRAM_API = 'https://api.instagram.com'
+INSTAGRAM_API = 'https://api.instagram.com/v1'
 
 
 class BaseModel(object):
@@ -232,7 +232,7 @@ def _parse_medias(data):
     return medias
 
 
-@endpoint('/v1/users/%(user_id)s')
+@endpoint('/users/%(user_id)s')
 def user_info(req):
     data = req.json().get('data')
     data.update({
@@ -242,25 +242,25 @@ def user_info(req):
     return user
 
 
-@endpoint('/v1/users/self/feed')
+@endpoint('/users/self/feed')
 def user_self_feed(req):
     data = req.json().get('data')
     return _parse_medias(data)
 
 
-@endpoint('/v1/users/%(user_id)s/media/recent')
+@endpoint('/users/%(user_id)s/media/recent')
 def user_recent_media(req):
     data = req.json().get('data')
     return _parse_medias(data)
 
 
-@endpoint('/v1/users/self/media/liked')
+@endpoint('/users/self/media/liked')
 def user_self_liked(req):
     data = req.json().get('data')
     return _parse_medias(data)
 
 
-@endpoint('/v1/users/search')
+@endpoint('/users/search')
 def users_search(req):
     data = req.json().get('data')
     users = []
@@ -269,43 +269,43 @@ def users_search(req):
     return users
 
 
-@endpoint('/v1/media/%(media_id)s')
+@endpoint('/media/%(media_id)s')
 def media(req):
     data = req.json().get('data')
     return _parse_medias([data])[0]
 
 
-@endpoint('/v1/media/search')
+@endpoint('/media/search')
 def media_search(req):
     data = req.json().get('data')
     return _parse_medias(data)
 
 
-@endpoint('/v1/media/popular')
+@endpoint('/media/popular')
 def media_popular(req):
     data = req.json().get('data')
     return _parse_medias(data)
 
 
-@endpoint('/v1/geographies/%(geo_id)s/media/recent')
+@endpoint('/geographies/%(geo_id)s/media/recent')
 def geo_media_recent(req):
     data = req.json().get('data')
     return _parse_medias(data)
 
 
-@endpoint('/v1/locations/%(location_id)s')
+@endpoint('/locations/%(location_id)s')
 def location(req):
     data = req.json().get('data')
     return Location.parse_from_dict(data)
 
 
-@endpoint('/v1/locations/%(location_id)s/media/recent')
+@endpoint('/locations/%(location_id)s/media/recent')
 def location_media_recent(req):
     data = req.json().get('data')
     return _parse_medias(data)
 
 
-@endpoint('/v1/locations/search')
+@endpoint('/locations/search')
 def location_search(req):
     data = req.json().get('data')
     locations = []
@@ -314,19 +314,19 @@ def location_search(req):
     return locations
 
 
-@endpoint('/v1/tags/%(tag_name)s')
+@endpoint('/tags/%(tag_name)s')
 def tag(req):
     data = req.json().get('data')
     return Tag.parse_from_dict(data)
 
 
-@endpoint('/v1/tags/%(tag_name)s/media/recent')
+@endpoint('/tags/%(tag_name)s/media/recent')
 def tags_media_recent(req):
     data = req.json().get('data')
     return _parse_medias(data)
 
 
-@endpoint('/v1/tags/search')
+@endpoint('/tags/search')
 def tags_search(req):
     data = req.json().get('data')
     tags = []
@@ -335,7 +335,7 @@ def tags_search(req):
     return tags
 
 
-@endpoint('/v1/media/%(media_id)s/comments')
+@endpoint('/media/%(media_id)s/comments')
 def media_comments(req):
     data = req.json().get('data')
     comments = []
@@ -344,19 +344,19 @@ def media_comments(req):
     return comments
 
 
-@endpoint('/v1/media/%(media_id)s/comments', method='POST')
+@endpoint('/media/%(media_id)s/comments', method='POST')
 def post_media_comment(req):
     data = req.json()
     return True if data.get('meta').get('code') == 200 else False
 
 
-@endpoint('/v1/media(%(media_id)s/comments/%(comment_id)s', method='DELETE')
+@endpoint('/media(%(media_id)s/comments/%(comment_id)s', method='DELETE')
 def delete_media_comment(req):
     data = req.json()
     return True if data.get('meta').get('code') == 200 else False
 
 
-@endpoint('/v1/media/%(media_id)s/likes')
+@endpoint('/media/%(media_id)s/likes')
 def media_likes(req):
     data = req.json().get('data')
     likes = []
@@ -365,13 +365,13 @@ def media_likes(req):
     return likes
 
 
-@endpoint('/v1/media/%(media_id)s/likes', method='POST')
+@endpoint('/media/%(media_id)s/likes', method='POST')
 def post_media_like(req):
     data = req.json()
     return True if data.get('meta').get('code') == 200 else False
 
 
-@endpoint('/v1/media(%(media_id)s/likes', method='DELETE')
+@endpoint('/media(%(media_id)s/likes', method='DELETE')
 def delete_media_like(req):
     data = req.json()
     return True if data.get('meta').get('code') == 200 else False
