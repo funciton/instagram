@@ -312,3 +312,24 @@ def location_search(req):
     for location in data:
         locations.append(Location.parse_from_dict(location))
     return locations
+
+
+@endpoint('/v1/tags/%(tag_name)s')
+def tag(req):
+    data = req.json().get('data')
+    return Tag.parse_from_dict(data)
+
+
+@endpoint('/v1/tags/%(tag_name)s/media/recent')
+def tags_media_recent(req):
+    data = req.json().get('data')
+    return _parse_medias(data)
+
+
+@endpoint('/v1/tags/search')
+def tags_search(req):
+    data = req.json().get('data')
+    tags = []
+    for tag in data:
+        tags.append(Tag.parse_from_dict(tag))
+    return tags
