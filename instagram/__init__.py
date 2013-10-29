@@ -1,5 +1,5 @@
+import re
 import functools
-
 import requests
 
 
@@ -170,16 +170,18 @@ class Media(BaseModel):
                 )
 
 
-def endpoint(uri, method='GET'):
+def endpoint(uri, method='GET', api_prefix=INSTAGRAM_API):
     def _endpoint(ref):
         @functools.wraps(ref)
         def wrapper(**kwargs):
+            uri = '%s%s' % (
+                api_prefix,
+                uri % kwargs
+            )
+            uri = re.sub(r'\/+', '/', uri)
             req = requests.request(
                 method,
-                '%s%s' % (
-                    INSTAGRAM_API,
-                    uri % kwargs
-                ),
+                uri,
                 params=kwargs
             )
             if req.status_code != 200:
