@@ -38,8 +38,10 @@ class User(BaseModel):
 
 class Tag(BaseModel):
 
-    def __init__(self, label):
+    def __init__(self, label, media_count=None):
         self.label = label
+        # TODO getter to request media_count if not provided
+        self._media_count = media_count
 
 
 class Comment(BaseModel):
@@ -281,5 +283,11 @@ def media_search(req):
 
 @endpoint('/v1/media/popular')
 def media_popular(req):
+    data = req.json().get('data')
+    return _parse_medias(data)
+
+
+@endpoint('/v1/geographies/%(geo_id)s/media/recent')
+def geo_media_recent(req):
     data = req.json().get('data')
     return _parse_medias(data)
