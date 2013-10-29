@@ -339,7 +339,7 @@ def tags_search(req):
 def media_comments(req):
     data = req.json().get('data')
     comments = []
-    for comment in comments:
+    for comment in data:
         comments.append(Comment.parse_from_dict(data.get(comment)))
     return comments
 
@@ -352,5 +352,26 @@ def post_media_comment(req):
 
 @endpoint('/v1/media(%(media_id)s/comments/%(comment_id)s', method='DELETE')
 def delete_media_comment(req):
+    data = req.json()
+    return True if data.get('meta').get('code') == 200 else False
+
+
+@endpoint('/v1/media/%(media_id)s/likes')
+def media_likes(req):
+    data = req.json().get('data')
+    likes = []
+    for like in data:
+        likes.append(Like.parse_from_dict(data.get(like)))
+    return likes
+
+
+@endpoint('/v1/media/%(media_id)s/likes', method='POST')
+def post_media_like(req):
+    data = req.json()
+    return True if data.get('meta').get('code') == 200 else False
+
+
+@endpoint('/v1/media(%(media_id)s/likes', method='DELETE')
+def delete_media_like(req):
     data = req.json()
     return True if data.get('meta').get('code') == 200 else False
