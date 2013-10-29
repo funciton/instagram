@@ -7,6 +7,8 @@ This lib is based on [python-requests](http://www.python-requests.org/en/latest/
 
 Full API is implemented but still requires extra work.
 
+Implemented methods return models.
+
 Method list
 ------------
 
