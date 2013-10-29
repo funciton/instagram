@@ -265,3 +265,21 @@ def users_search(req):
     for user in data:
         users.append(User.parse_from_dict(data.get(user)))
     return users
+
+
+@endpoint('/v1/media/%(media_id)s')
+def media(req):
+    data = req.json().get('data')
+    return _parse_medias([data])[0]
+
+
+@endpoint('/v1/media/search')
+def media_search(req):
+    data = req.json().get('data')
+    return _parse_medias(data)
+
+
+@endpoint('/v1/media/popular')
+def media_popular(req):
+    data = req.json().get('data')
+    return _parse_medias(data)
