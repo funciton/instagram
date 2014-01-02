@@ -10,7 +10,7 @@ Usage
 -----
 
 Library contains an @endpoint decorator in case you want to create your
-own handler:
+own handler::
 
     @endpoint('/media/popular')
     def my_method(req):
@@ -43,7 +43,7 @@ In case you prefer to use a built-in handler here is the list of them:
 - delete_media_like
 
 
-client_id, access_token or uri data should be passed as kwargs, ex:
+client_id, access_token or uri data should be passed as kwargs, ex::
 
     from instagram import user_info
 
