@@ -170,18 +170,27 @@ class Media(BaseModel):
                 )
 
 
-def endpoint(uri, method='GET', api_prefix=INSTAGRAM_API):
+def endpoint(uri, method='GET', api_prefix=INSTAGRAM_API,
+             accept_client_id=False):
     def _endpoint(ref):
         @functools.wraps(ref)
         def wrapper(**kwargs):
-            uri = '%s%s' % (
+            if (
+                accept_client_id is True and
+                kwargs.get('client_id', None) is None
+            ) and kwargs.get('access_token', None) is None:
+                raise RuntimeError('%saccess_token required' % (
+                    'client_id or ' if accept_client_id is True else ''
+                ))
+
+            _uri = '%s%s' % (
                 api_prefix,
                 uri % kwargs
             )
-            uri = re.sub(r'\/+', '/', uri)
+            _uri = re.sub(r'\/+', '/', _uri)
             req = requests.request(
                 method,
-                uri,
+                _uri,
                 params=kwargs
             )
             if req.status_code != 200:
@@ -250,7 +259,7 @@ def user_self_feed(req):
     return _parse_medias(data)
 
 
-@endpoint('/users/%(user_id)s/media/recent')
+@endpoint('/users/%(user_id)s/media/recent', accept_client_id=True)
 def user_recent_media(req):
     data = req.json().get('data')
     return _parse_medias(data)
@@ -289,7 +298,7 @@ def media_popular(req):
     return _parse_medias(data)
 
 
-@endpoint('/geographies/%(geo_id)s/media/recent')
+@endpoint('/geographies/%(geo_id)s/media/recent', accept_client_id=True)
 def geo_media_recent(req):
     data = req.json().get('data')
     return _parse_medias(data)
